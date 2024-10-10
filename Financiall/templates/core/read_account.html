@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="h1">{{ account.name }}</div>
+    
+    <div class="h2">Latest Mutations</div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Description</th>
+                <th scope="col">Ohter party</th>
+                <th scope="col">Account Number</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Date and time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mutation in account.mutations %}
+                <tr>
+                    <td>{{ mutation.description }}</td>
+                    <td>{{ mutation.otherParty }}</td>
+                    <td>{{ mutation.otherPartyAccountNumber }}</td>
+                    <td class="amount">€{{ mutation.amount|floatformat:2 }}</td>
+                    <td>{{ mutation.dateTime }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'account_create' %}">
+        <button onclick="" class="btn Fbutton">
+            Add Account
+        </button>
+    </a>
+
+{% endblock %}

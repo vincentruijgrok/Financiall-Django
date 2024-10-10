@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="h1">Finance it all</div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Calculated balance</th>
+                <th scope="col">Latest mutation</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for account in accounts %}
+                <tr>
+                    <th scope="col"><a href="{% url 'account_read' account.id %}">{{ account.name }}</a></th>
+                    <td class="amount">€{{ account.calculated_balance|floatformat:2 }}</td>
+                    <td>{{ account.latest_mutation.dateTime|default:'No mutations found' }} </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'account_create' %}">
+        <button onclick="" class="btn Fbutton">
+            Add Account
+        </button>
+    </a>
+
+{% endblock %}
