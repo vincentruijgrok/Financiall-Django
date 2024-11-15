@@ -3,7 +3,7 @@ from django.http import HttpRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
-from .forms import AccountForm
+from .forms import AccountForm, MutationForm
 from .models import Account
 
 
@@ -31,8 +31,24 @@ def create_account(request: HttpRequest):
     })
 
 def read_account(request: HttpRequest, id: str):
-        account = get_object_or_404(Account, pk=id)
-        return render(request, 'core/read_account.html', {
-            'account': account
-        })
+    account = get_object_or_404(Account, pk=id)
+    return render(request, 'core/read_account.html', {
+        'account': account
+    })
+
+def create_mutation(request: HttpRequest, id: str):
+    account = get_object_or_404(Account, pk=id)
+    if request.method == 'POST':
+        form = MutationForm(request.POST)
+        if form.is_valid():
+            newMutation = form.save(commit=False)
+            newMutation.account = account
+            return redirect(reverse('read_account', id))
+    else:
+        form = MutationForm()
+
+    return render(request, 'core/create_mutation.html', {
+        'form': form,
+        'account': account
+    })
 

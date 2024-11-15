@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="h1">Create new mutation</div>
+    
+    <form method="post" action="{%  url 'mutation_create' account.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn Fbutton" type="submit">Save</button>
+    </form>
+{% endblock %}

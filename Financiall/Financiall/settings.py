@@ -116,7 +116,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_REDIRECT_URL = '/'
-LOGIN_URL = '/accounts/login'
+LOGIN_URL = '/auth/login'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/

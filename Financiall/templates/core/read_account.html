@@ -8,7 +8,7 @@
         <thead>
             <tr>
                 <th scope="col">Description</th>
-                <th scope="col">Ohter party</th>
+                <th scope="col">Other party</th>
                 <th scope="col">Account Number</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Date and time</th>
@@ -26,10 +26,84 @@
             {% endfor %}
         </tbody>
     </table>
-    <a href="{% url 'account_create' %}">
+    <a href="{% url 'mutation_create' account.id %}">
         <button onclick="" class="btn Fbutton">
-            Add Account
+            Add Mutation
         </button>
     </a>
+
+    <div class="h2">Categories and groups</div>
+    <p>Select a category and see its groups. Each group must belong to a single category.</p>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="h4">Categories</div>
+            {% for category in account.categories %}
+            <p>
+                <div class="category-link{% if forloop.first %} active{% endif %}"
+                     data-category-id="category-{{ category.id }}">
+                    {{ category.name }}
+                </div>
+            </p>
+            {% endfor %}
+        </div>
+        <div class="col-6">
+            <div class="h4">Groups</div>
+            {% for category in account.categories %}
+            <div id="category-{{ category.id }}"
+                 class="group-list"
+                 style="display: {% if forloop.first %}block{% else %}none{% endif %};">
+                {% for group in category.groups %}
+                <p>{{ group.name }}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+    .category-link {
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 3px;
+    }
+    .category-link.active {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+    }
+    </style>
+
+    <script>
+        // Get all category links
+        const categoryLinks = document.querySelectorAll('.category-link');
+
+        categoryLinks.forEach(link => {
+            link.addEventListener('click', function () {
+                // Remove 'active' class from all category links
+                categoryLinks.forEach(link => link.classList.remove('active'));
+
+                // Add 'active' class to the clicked category
+                this.classList.add('active');
+
+                // Hide all group lists
+                document.querySelectorAll('.group-list').forEach(groupList => {
+                    groupList.style.display = 'none';
+                });
+
+                // Show the selected category's groups
+                const categoryId = this.getAttribute('data-category-id');
+                const groupList = document.getElementById(categoryId);
+                if (groupList) {
+                    groupList.style.display = 'block';
+                }
+            });
+        });
+
+        // Select the first category by default
+        if (categoryLinks.length > 0) {
+            categoryLinks[0].click();
+        }
+    </script>
 
 {% endblock %}
